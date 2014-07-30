@@ -176,7 +176,7 @@ public class RContext {
         try {
             return parser.script();
         } catch (RecognitionException e) {
-            Console.parseError(parser, e);
+            Console.UserCode.parseError(parser, e);
             return null;
         }
     }

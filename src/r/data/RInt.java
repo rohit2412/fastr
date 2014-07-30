@@ -127,12 +127,14 @@ public interface RInt extends RNumber {
             if (values.length == 1 && dimensions == null && names == null) {
                 return new ScalarIntImpl(values[0]);
             }
+            if (values.length > H2oIntImpl.MinSize && dimensions!=null && dimensions.length==2) return new H2oIntImpl(values, dimensions, names);
             return new IntImpl(values, dimensions, names, null, false);
         }
         public static RInt getFor(int[] values, int[] dimensions, Names names, Attributes attributes) {  // re-uses values!
             if (values.length == 1 && dimensions == null && names == null && attributes == null) {
                 return new ScalarIntImpl(values[0]);
             }
+            if (values.length > H2oIntImpl.MinSize && dimensions!=null && dimensions.length==2) return new H2oIntImpl(values, dimensions, names, attributes);
             return new IntImpl(values, dimensions, names, attributes, false);
         }
         public static RInt forSequence(int from, int to, int step) {

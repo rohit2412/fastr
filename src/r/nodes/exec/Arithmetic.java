@@ -19,6 +19,7 @@ import r.errors.*;
 import r.ext.*;
 import r.nodes.ast.*;
 import r.runtime.*;
+import water.DualMatrixTask;
 
 // FIXME: the complex arithmetic differs for scalars/non-scalars (NA semantics - which part is NA), though
 // this should not be visible to the end-user
@@ -1295,7 +1296,10 @@ public class Arithmetic extends BaseR {
             }
         }
 
-
+        public H2oDoubleImpl opDoubleEqualSize(ASTNode ast, H2oDoubleImpl x, H2oDoubleImpl y, int size){return null;}
+        public H2oDoubleImpl opDoubleIntEqualSize(ASTNode ast, H2oDoubleImpl x, H2oIntImpl y, int size){return null;}
+        public H2oDoubleImpl opIntDoubleEqualSize(ASTNode ast, H2oIntImpl x, H2oDoubleImpl y, int size){return null;}
+        public H2oIntImpl  opIntEqualSize(ASTNode ast, H2oIntImpl x, H2oIntImpl y, int size){return null;}
         public abstract void opDoubleEqualSize(ASTNode ast, double[] x, double[] y, double[] res, int size);
         public abstract void opDoubleScalar(ASTNode ast, double[] x, double y, double[] res, int size);
         public abstract void opScalarDouble(ASTNode ast, double x, double[] y, double[] res, int size);
@@ -1541,6 +1545,7 @@ public class Arithmetic extends BaseR {
         }
 
         public abstract boolean returnsDouble();
+
     }
 
     public static final class Add extends ValueArithmetic {
@@ -1945,6 +1950,24 @@ public class Arithmetic extends BaseR {
         public boolean returnsDouble() {
             return false;
         }
+
+        private water.fvec.Frame h2oOp(water.fvec.Frame[] fr){
+            return new DualMatrixTask().doAll(fr[0].numCols(), fr, new DualMatrixTask.H2oAdd()).outputFrame(null, null);
+        }
+
+        public H2oDoubleImpl opDoubleEqualSize(ASTNode ast, H2oDoubleImpl x, H2oDoubleImpl y, int size){
+            return new H2oDoubleImpl(h2oOp(new water.fvec.Frame[]{x.frame,y.frame}));
+        }
+
+        public H2oDoubleImpl opDoubleIntEqualSize(ASTNode ast, H2oDoubleImpl x, H2oIntImpl y, int size){
+            return new H2oDoubleImpl(h2oOp(new water.fvec.Frame[]{x.frame,y.frame}));
+        }
+        public H2oDoubleImpl opIntDoubleEqualSize(ASTNode ast, H2oIntImpl x, H2oDoubleImpl y, int size){
+            return new H2oDoubleImpl(h2oOp(new water.fvec.Frame[]{x.frame,y.frame}));
+        }
+        public H2oIntImpl opIntEqualSize(ASTNode ast, H2oIntImpl x, H2oIntImpl y, int size){
+            return new H2oIntImpl(h2oOp(new water.fvec.Frame[]{x.frame,y.frame}));
+        }
     }
 
     public static final class Sub extends ValueArithmetic {
@@ -2303,6 +2326,24 @@ public class Arithmetic extends BaseR {
         @Override
         public boolean returnsDouble() {
             return false;
+        }
+
+        private water.fvec.Frame h2oOp(water.fvec.Frame[] fr){
+            return new DualMatrixTask().doAll(fr[0].numCols(), fr, new DualMatrixTask.H2oSub()).outputFrame(null, null);
+        }
+
+        public H2oDoubleImpl opDoubleEqualSize(ASTNode ast, H2oDoubleImpl x, H2oDoubleImpl y, int size){
+            return new H2oDoubleImpl(h2oOp(new water.fvec.Frame[]{x.frame,y.frame}));
+        }
+
+        public H2oDoubleImpl opDoubleIntEqualSize(ASTNode ast, H2oDoubleImpl x, H2oIntImpl y, int size){
+            return new H2oDoubleImpl(h2oOp(new water.fvec.Frame[]{x.frame,y.frame}));
+        }
+        public H2oDoubleImpl opIntDoubleEqualSize(ASTNode ast, H2oIntImpl x, H2oDoubleImpl y, int size){
+            return new H2oDoubleImpl(h2oOp(new water.fvec.Frame[]{x.frame,y.frame}));
+        }
+        public H2oIntImpl opIntEqualSize(ASTNode ast, H2oIntImpl x, H2oIntImpl y, int size){
+            return new H2oIntImpl(h2oOp(new water.fvec.Frame[]{x.frame,y.frame}));
         }
     }
 
@@ -2736,6 +2777,24 @@ public class Arithmetic extends BaseR {
         @Override
         public boolean returnsDouble() {
             return false;
+        }
+
+        private water.fvec.Frame h2oOp(water.fvec.Frame[] fr){
+            return new DualMatrixTask().doAll(fr[0].numCols(), fr, new DualMatrixTask.H2oMult()).outputFrame(null, null);
+        }
+
+        public H2oDoubleImpl opDoubleEqualSize(ASTNode ast, H2oDoubleImpl x, H2oDoubleImpl y, int size){
+            return new H2oDoubleImpl(h2oOp(new water.fvec.Frame[]{x.frame,y.frame}));
+        }
+
+        public H2oDoubleImpl opDoubleIntEqualSize(ASTNode ast, H2oDoubleImpl x, H2oIntImpl y, int size){
+            return new H2oDoubleImpl(h2oOp(new water.fvec.Frame[]{x.frame,y.frame}));
+        }
+        public H2oDoubleImpl opIntDoubleEqualSize(ASTNode ast, H2oIntImpl x, H2oDoubleImpl y, int size){
+            return new H2oDoubleImpl(h2oOp(new water.fvec.Frame[]{x.frame,y.frame}));
+        }
+        public H2oIntImpl opIntEqualSize(ASTNode ast, H2oIntImpl x, H2oIntImpl y, int size){
+            return new H2oIntImpl(h2oOp(new water.fvec.Frame[]{x.frame,y.frame}));
         }
     }
 
@@ -3337,6 +3396,24 @@ public class Arithmetic extends BaseR {
         public boolean returnsDouble() {
             return true;
         }
+
+        private water.fvec.Frame h2oOp(water.fvec.Frame[] fr){
+            return new DualMatrixTask().doAll(fr[0].numCols(), fr, new DualMatrixTask.H2oPow()).outputFrame(null, null);
+        }
+
+        public H2oDoubleImpl opDoubleEqualSize(ASTNode ast, H2oDoubleImpl x, H2oDoubleImpl y, int size){
+            return new H2oDoubleImpl(h2oOp(new water.fvec.Frame[]{x.frame,y.frame}));
+        }
+
+        public H2oDoubleImpl opDoubleIntEqualSize(ASTNode ast, H2oDoubleImpl x, H2oIntImpl y, int size){
+            return new H2oDoubleImpl(h2oOp(new water.fvec.Frame[]{x.frame,y.frame}));
+        }
+        public H2oDoubleImpl opIntDoubleEqualSize(ASTNode ast, H2oIntImpl x, H2oDoubleImpl y, int size){
+            return new H2oDoubleImpl(h2oOp(new water.fvec.Frame[]{x.frame,y.frame}));
+        }
+        public H2oIntImpl opIntEqualSize(ASTNode ast, H2oIntImpl x, H2oIntImpl y, int size){
+            return new H2oIntImpl(h2oOp(new water.fvec.Frame[]{x.frame,y.frame}));
+        }
     }
 
     public static boolean isFinite(double d) {
@@ -3736,6 +3813,24 @@ public class Arithmetic extends BaseR {
         @Override
         public boolean returnsDouble() {
             return true;
+        }
+
+        private water.fvec.Frame h2oOp(water.fvec.Frame[] fr){
+            return new DualMatrixTask().doAll(fr[0].numCols(), fr, new DualMatrixTask.H2oDiv()).outputFrame(null, null);
+        }
+
+        public H2oDoubleImpl opDoubleEqualSize(ASTNode ast, H2oDoubleImpl x, H2oDoubleImpl y, int size){
+            return new H2oDoubleImpl(h2oOp(new water.fvec.Frame[]{x.frame,y.frame}));
+        }
+
+        public H2oDoubleImpl opDoubleIntEqualSize(ASTNode ast, H2oDoubleImpl x, H2oIntImpl y, int size){
+            return new H2oDoubleImpl(h2oOp(new water.fvec.Frame[]{x.frame,y.frame}));
+        }
+        public H2oDoubleImpl opIntDoubleEqualSize(ASTNode ast, H2oIntImpl x, H2oDoubleImpl y, int size){
+            return new H2oDoubleImpl(h2oOp(new water.fvec.Frame[]{x.frame,y.frame}));
+        }
+        public H2oIntImpl opIntEqualSize(ASTNode ast, H2oIntImpl x, H2oIntImpl y, int size){
+            return new H2oIntImpl(h2oOp(new water.fvec.Frame[]{x.frame,y.frame}));
         }
     }
 
@@ -4381,7 +4476,12 @@ public class Arithmetic extends BaseR {
 //                    // FIXME: do this only for Pow? sometimes? the check may be costly for short vectors
 //                    return arit.opDoubleImplEqualSize(ast, (DoubleImpl) a, (DoubleImpl) b, na, dim, names, attributes);
 //                }
-                res = new DoubleViewForDoubleDouble.EqualSizeVectorVector(a, b, dim, names, attributes, na, depth, arit, ast);
+                if (H2oDoubleImpl.isH2o(a) && H2oDoubleImpl.isH2o(b)) {
+                    res = new DoubleViewForDoubleDouble.H2oEqualSizeVectorVector(a, b, dim, names, attributes, na, depth, arit, ast);
+                }
+                else {
+                    res = new DoubleViewForDoubleDouble.EqualSizeVectorVector(a, b, dim, names, attributes, na, depth, arit, ast);
+                }
             } else if (nb == 1 && na > 0) {
 //                if (arit == POW && na > 1) {
 //                    return arit.opDoubleImplScalarCheckingNA(ast, (DoubleImpl) a.materialize(), b.getDouble(0), na, dim, names, attributes);
@@ -4428,7 +4528,12 @@ public class Arithmetic extends BaseR {
                 } else if (RIntSequence.isInstance(b)) {
                     res = new DoubleViewForDoubleInt.EqualSizeVectorSequence(a, b, dim, names, attributes, na, depth, arit, ast);
                 } else {
-                    res = new DoubleViewForDoubleInt.EqualSizeVectorVector(a, b, dim, names, attributes, na, depth, arit, ast);
+                    if (H2oDoubleImpl.isH2o(a) && H2oIntImpl.isH2o(b)) {
+                        res = new DoubleViewForDoubleInt.H2oEqualSizeVectorVector(a, b, dim, names, attributes, na, depth, arit, ast);
+                    }
+                    else {
+                        res = new DoubleViewForDoubleInt.EqualSizeVectorVector(a, b, dim, names, attributes, na, depth, arit, ast);
+                    }
                 }
             } else if (nb == 1 && na > 0) {
                 res = new DoubleViewForDoubleDouble.VectorScalar(a, b.asDouble(), dim, names, attributes, na, depth, arit, ast);
@@ -4489,7 +4594,12 @@ public class Arithmetic extends BaseR {
                 } else if (RIntSequence.isInstance(a)) {
                     res = new DoubleViewForIntDouble.EqualSizeSequenceVector(a, b, dim, names, attributes, na, depth, arit, ast);
                 } else {
-                    res = new DoubleViewForIntDouble.EqualSizeVectorVector(a, b, dim, names, attributes, na, depth, arit, ast);
+                    if (H2oIntImpl.isH2o(a) && H2oDoubleImpl.isH2o(b)) {
+                        res = new DoubleViewForIntDouble.H2oEqualSizeVectorVector(a, b, dim, names, attributes, na, depth, arit, ast);
+                    }
+                    else {
+                        res = new DoubleViewForIntDouble.EqualSizeVectorVector(a, b, dim, names, attributes, na, depth, arit, ast);
+                    }
                 }
             } else if (nb == 1 && na > 0) {
                 if (RIntSimpleRange.isInstance(a)) {
@@ -4557,7 +4667,12 @@ public class Arithmetic extends BaseR {
                 } else if (RIntSequence.isInstance(a)) {
                     res = new IntViewForIntInt.EqualSizeSequenceInt(a, b, dim, names, attributes, na, depth, arit, ast);
                 } else {
-                    res = new IntViewForIntInt.EqualSize(a, b, dim, names, attributes, na, depth, arit, ast);
+                    if (H2oIntImpl.isH2o(a) && H2oIntImpl.isH2o(b)) {
+                        res = new IntViewForIntInt.H2oEqualSize(a, b, dim, names, attributes, na, depth, arit, ast);
+                    }
+                    else {
+                        res = new IntViewForIntInt.EqualSize(a, b, dim, names, attributes, na, depth, arit, ast);
+                    }
                 }
             } else if (nb == 1 && na > 0) {
                 if (RIntSimpleRange.isInstance(a)) {
@@ -5582,7 +5697,18 @@ public class Arithmetic extends BaseR {
             }
         }
 
-        static final class EqualSizeVectorVector extends DoubleViewForDoubleDouble implements RDouble {
+        static class H2oEqualSizeVectorVector extends EqualSizeVectorVector implements H2oView {
+            public H2oEqualSizeVectorVector(RDouble a, RDouble b, int[] dimensions, Names names, Attributes attributes, int n, int depth, ValueArithmetic arit, ASTNode ast) {
+                super(a, b, dimensions, names, attributes, n, depth, arit, ast);
+            }
+
+            @Override
+            public RDouble materialize() {
+                return arit.opDoubleEqualSize(ast, (H2oDoubleImpl)a.materialize(), (H2oDoubleImpl)b.materialize(), n);
+            }
+        }
+
+        static class EqualSizeVectorVector extends DoubleViewForDoubleDouble implements RDouble {
 
             public EqualSizeVectorVector(RDouble a, RDouble b, int[] dimensions, Names names, Attributes attributes, int n, int depth, ValueArithmetic arit, ASTNode ast) {
                 super(a, b, dimensions, names, attributes, n, depth, arit, ast);
@@ -6082,7 +6208,19 @@ public class Arithmetic extends BaseR {
             }
         }
 
-        static final class EqualSizeVectorVector extends DoubleViewForDoubleInt implements RDouble {
+        static class H2oEqualSizeVectorVector extends EqualSizeVectorVector implements H2oView {
+            public H2oEqualSizeVectorVector(RDouble a, RInt b, int[] dimensions, Names names, Attributes attributes, int n, int depth, ValueArithmetic arit, ASTNode ast) {
+                super(a, b, dimensions, names, attributes, n, depth, arit, ast);
+            }
+
+            @Override
+            public RDouble materialize() {
+                return arit.opDoubleIntEqualSize(ast, (H2oDoubleImpl) a.materialize(), (H2oIntImpl) b.materialize(), n);
+            }
+        }
+
+
+        static class EqualSizeVectorVector extends DoubleViewForDoubleInt implements RDouble {
 
             public EqualSizeVectorVector(RDouble a, RInt b, int[] dimensions, Names names, Attributes attributes, int n, int depth, ValueArithmetic arit, ASTNode ast) {
                 super(a, b, dimensions, names, attributes, n, depth, arit, ast);
@@ -6459,7 +6597,20 @@ public class Arithmetic extends BaseR {
             }
         }
 
-        static final class EqualSizeVectorVector extends DoubleViewForIntDouble implements RDouble {
+     static class H2oEqualSizeVectorVector extends EqualSizeVectorVector implements H2oView {
+         public H2oEqualSizeVectorVector(RInt a, RDouble b, int[] dimensions, Names names, Attributes attributes, int n, int depth, ValueArithmetic arit, ASTNode ast) {
+             super(a, b, dimensions, names, attributes, n, depth, arit, ast);
+         }
+
+         @Override
+         public RDouble materialize() {
+             return arit.opIntDoubleEqualSize(ast, (H2oIntImpl) a.materialize(), (H2oDoubleImpl) b.materialize(), n);
+         }
+     }
+
+
+
+     static class EqualSizeVectorVector extends DoubleViewForIntDouble implements RDouble {
 
             public EqualSizeVectorVector(RInt a, RDouble b, int[] dimensions, Names names, Attributes attributes, int n, int depth, ValueArithmetic arit, ASTNode ast) {
                 super(a, b, dimensions, names, attributes, n, depth, arit, ast);
@@ -7270,7 +7421,18 @@ public class Arithmetic extends BaseR {
             }
         }
 
-        static final class EqualSize extends IntViewForIntInt implements RInt {
+        static class H2oEqualSize extends EqualSize implements H2oView {
+            public H2oEqualSize(RInt a, RInt b, int[] dimensions, Names names, Attributes attributes, int n, int depth, ValueArithmetic arit, ASTNode ast) {
+                super(a, b, dimensions, names, attributes, n, depth, arit, ast);
+            }
+
+            @Override
+            public RInt materialize() {
+                return arit.opIntEqualSize(ast, (H2oIntImpl) a.materialize(), (H2oIntImpl) b.materialize(), n);
+            }
+        }
+
+        static class EqualSize extends IntViewForIntInt implements RInt {
 
             public EqualSize(RInt a, RInt b, int[] dimensions, Names names, Attributes attributes, int n, int depth, ValueArithmetic arit, ASTNode ast) {
                 super(a, b, dimensions, names, attributes, n, depth, arit, ast);

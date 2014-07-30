@@ -693,6 +693,8 @@ public abstract class View extends ArrayImpl implements RArray {
         }
     }
 
+    public interface H2oView {}
+
     public abstract static class RDoubleView extends ParametricView implements RDouble {
         @Override
         public Object get(int i) {

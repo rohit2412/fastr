@@ -26,7 +26,7 @@ final class CommandArgs extends CallFactory {
         check(call, names, exprs);
         if (names.length == 0) { return new Builtin.Builtin0(call, names, exprs) {
             @Override public RAny doBuiltIn(Frame frame) {
-                return RString.RStringFactory.getFor(Console.trailingArgs);
+                return RString.RStringFactory.getFor(Console.UserCode.trailingArgs);
             }
         }; }
         ensureArgName(call, "trailingOnly", names[0]);
@@ -40,9 +40,9 @@ final class CommandArgs extends CallFactory {
                 }
                 int trailingOnly = l.getLogical(0);
                 if (trailingOnly == RLogical.TRUE) {
-                    return RString.RStringFactory.getArray(Console.trailingArgs);
+                    return RString.RStringFactory.getArray(Console.UserCode.trailingArgs);
                 } else if (trailingOnly == RLogical.FALSE) {
-                    return RString.RStringFactory.getArray(Console.commandArgs);
+                    return RString.RStringFactory.getArray(Console.UserCode.commandArgs);
                 } else {
                     throw RError.getUnexpectedNA(ast); // not always the same error message as with GNU-R
                 }

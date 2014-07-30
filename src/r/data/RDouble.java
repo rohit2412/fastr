@@ -214,12 +214,14 @@ public interface RDouble extends RNumber {
             if (values.length == 1 && dimensions == null && names == null) {
                 return new ScalarDoubleImpl(values[0]);
             }
+            if (values.length > H2oDoubleImpl.MinSize && dimensions!=null && dimensions.length==2) return new H2oDoubleImpl(values, dimensions, names, null);
             return new DoubleImpl(values, dimensions, names, null, false);
         }
         public static RDouble getFor(double[] values, int[] dimensions, Names names, Attributes attributes) {  // re-uses values!
             if (values.length == 1 && dimensions == null && names == null && attributes == null) {
                 return new ScalarDoubleImpl(values[0]);
             }
+            if (values.length > H2oDoubleImpl.MinSize && dimensions!=null && dimensions.length==2) return new H2oDoubleImpl(values, dimensions, names, attributes);
             return new DoubleImpl(values, dimensions, names, attributes, false);
         }
         public static RDouble getEmpty(boolean named) {

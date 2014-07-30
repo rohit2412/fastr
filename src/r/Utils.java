@@ -3,6 +3,8 @@ package r;
 import r.data.*;
 import r.data.RAny.Attributes;
 import r.data.RArray.Names;
+import r.data.internal.H2oDoubleImpl;
+import r.data.internal.H2oIntImpl;
 import r.errors.*;
 
 public final class Utils {
@@ -90,7 +92,9 @@ public final class Utils {
     }
 
     public static RArray createArray(RAny type, int size, int[] dimensions, Names names, Attributes attributes) {
+        if (type instanceof RInt && size > H2oIntImpl.MinSize) { return RInt.RIntFactory.getFor(((RInt) type).getContent(), dimensions, names, attributes); }
         if (type instanceof RInt) { return RInt.RIntFactory.getUninitializedArray(size, dimensions, names, attributes); }
+        if (type instanceof RDouble && size > H2oDoubleImpl.MinSize) { return RDouble.RDoubleFactory.getFor(((RDouble) type).getContent(), dimensions, names, attributes); }
         if (type instanceof RDouble) { return RDouble.RDoubleFactory.getUninitializedArray(size, dimensions, names, attributes); }
         if (type instanceof RLogical) { return RLogical.RLogicalFactory.getUninitializedArray(size, dimensions, names, attributes); }
         if (type instanceof RList) { return RList.RListFactory.getUninitializedArray(size, dimensions, names, attributes); }

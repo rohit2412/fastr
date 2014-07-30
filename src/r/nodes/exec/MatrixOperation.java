@@ -8,6 +8,9 @@ import r.data.internal.*;
 import r.errors.*;
 import r.nodes.ast.*;
 import r.runtime.*;
+import r.runtime.Frame;
+import water.Multiplication;
+import water.fvec.*;
 
 public abstract class MatrixOperation extends BaseR {
 
@@ -165,6 +168,12 @@ public abstract class MatrixOperation extends BaseR {
             }
             int p = dimb[1];
 
+
+            if (H2oDoubleImpl.isH2o(a) && H2oDoubleImpl.isH2o(b)) {
+                water.fvec.Frame[] frs = new water.fvec.Frame[] { ((H2oDoubleImpl)a.materialize()).frame, ((H2oDoubleImpl)b.materialize()).frame };
+                return new H2oDoubleImpl( new Multiplication().doAll(frs).outputFrame(null, null) );
+            }
+
             double[] res;
             if (DGEMM_NA_WORKAROUND && (RDouble.RDoubleUtils.hasNAorNaN(a) || RDouble.RDoubleUtils.hasNAorNaN(b)) ||
                     m == 0 || n == 0 || p == 0) {
@@ -224,7 +233,7 @@ public abstract class MatrixOperation extends BaseR {
 
         @Override
         public Object execute(RAny l, RAny r) {
-
+            
             checkNumeric(l, r, ast); // TODO: support also complex matrices
             RDouble ld = l.asDouble().materialize(); // FIXME: double materialization (again in matrixTimesMatrixNative)
             RDouble rd = r.asDouble().materialize();

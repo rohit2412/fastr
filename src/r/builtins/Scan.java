@@ -166,7 +166,7 @@ final class Scan extends CallFactory {
                     }
                     RAny res = scan(buf, ast, what);
                     if (!quiet) {
-                        Console.println(String.format("Read %d item%s.", nread, nread == 1 ? "" : "s"));
+                        Console.UserCode.println(String.format("Read %d item%s.", nread, nread == 1 ? "" : "s"));
                     }
                     return res;
                 } catch (IOException e) {

@@ -2,10 +2,15 @@ package r.builtins;
 
 import r.*;
 import r.data.*;
+import r.data.internal.H2oDoubleImpl;
+import r.data.internal.H2oIntImpl;
 import r.errors.*;
 import r.nodes.ast.*;
 import r.nodes.exec.*;
 import r.runtime.*;
+import r.runtime.Frame;
+import water.Transpose;
+import water.fvec.*;
 
 /**
  * "t"
@@ -47,6 +52,17 @@ final class T extends CallFactory {
                         int m = dim[0];
                         int n = dim[1];
                         int[] ndim = new int[]{n, m};
+
+                        if ( (a instanceof RDouble && (H2oDoubleImpl.isH2o((RDouble)a))) ) {
+                            return new H2oDoubleImpl(new Transpose().doAll(new water.fvec.Frame[]{((H2oDoubleImpl) (a.materialize())).frame}, true, 1).outputFrame(null, null));
+                        }
+
+                        if ( (a instanceof RInt && (H2oIntImpl.isH2o((RInt) a))) ) {
+                            return new H2oIntImpl(new Transpose().doAll(new water.fvec.Frame[]{((H2oIntImpl) (a.materialize())).frame}, true, 1).outputFrame(null, null));
+                        }
+
+
+
                         if (IN_PLACE && a.isTemporary() && m == n) { // note: a view is not temporary
                             inPlaceSquare(a, m);
                             return a.setNames(null).setDimensions(ndim);

@@ -133,6 +133,7 @@ final class Matrix extends CallFactory {
 
                 boolean byRow = posByrow != -1 ? parseByRow(ast, args[posByrow]) : false;
                 RArray res = Utils.createArray(data, size, new int[]{nRow, nCol}, null, null);
+                if (res instanceof View.H2oView) { return res; }
                 if (data instanceof ScalarDoubleImpl && ((ScalarDoubleImpl) data).getDouble() == 0) { return res; }
                 int di = 0;
                 if (!byRow) {
